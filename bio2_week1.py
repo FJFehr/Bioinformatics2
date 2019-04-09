@@ -24,7 +24,19 @@ def Compositionk(Text, k):
 
 def main():
 
-    print(Compositionk("CAATCCAAC", 5))
+    #'dataset_197_3.txt'
+    with open('dataset_197_3.txt', 'r') as myfile:
+        dat = myfile.read().replace('\n', ' ')
+    myfile.close()
+
+    dat = dat.split()
+
+    kmer_array = Compositionk(dat[1], int(dat[0]))
+
+    with open("Compositionk_output.txt", "w") as text_file:
+        for kmer in kmer_array:
+            print(f"{kmer}", file=text_file)
+
 
 if __name__ == "__main__":
     main()
