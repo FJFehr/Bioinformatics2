@@ -93,9 +93,36 @@ def DeBruijnk(Text, k):
     for pattern in nodes:
         pattern_dict[pattern] = []
 
-    # This is different as we only look at the next one
+    # This is different to overlap as we only look at the next one
     for i in range(len(Text)-k):
         pattern_dict[Text[i:i+k]].append(Text[i+1:i+1+k])
+
+    return(pattern_dict)
+
+
+def DeBruijnGraph(Patterns):
+    """
+    Input: A collection of k-mers Patterns.
+    Output: The adjacency list of the de Bruijn graph DeBruijn(Patterns).
+    NOW GIVEN PATTERNS WE MUST RECREATE THE DEBRUIJN
+    """
+
+    k = len(Patterns[0])-1
+
+    # Isolate each kmer into prefix
+
+    # Define the placeholder
+    pattern_dict = {}
+
+    # Set up all our keys
+    for pattern in Patterns:
+        # Prefixs are the keys
+        pattern_dict[pattern[:k]] = []
+
+    # Append cases where the prefix == suffix (glueing)
+    for pattern in Patterns:
+            prefix = pattern[:k]
+            pattern_dict[prefix].append(pattern[len(pattern)-k:])
 
     return(pattern_dict)
 
@@ -103,7 +130,7 @@ def DeBruijnk(Text, k):
 def main():
 
     # #'dataset_199_6.txt'
-    with open('test.txt', 'r') as myfile:
+    with open('dataset_200_8.txt', 'r') as myfile:
         dat = myfile.read().replace('\n', ' ')
     myfile.close()
 
@@ -138,10 +165,23 @@ def main():
     #             string_temp = key + " -> " + val_str
     #             print(f"{string_temp}", file=text_file)
 
-    DeBruijnk_dict = DeBruijnk(dat[1], int(dat[0]))
+    # DeBruijnk_dict = DeBruijnk(dat[1], int(dat[0]))
 
-    with open("DeBruijnk_output.txt", "w") as text_file:
-        for key, val in DeBruijnk_dict.items():
+    # with open("DeBruijnk_output.txt", "w") as text_file:
+    #     for key, val in DeBruijnk_dict.items():
+    #         if (val != []):
+    #             val_str = val[0]
+    #             if len(val) > 1:
+    #                 for i in range(len(val)-1):
+    #                     val_str = val_str + ", " + val[i+1]
+
+    #             string_temp = key + " -> " + val_str
+    #             print(f"{string_temp}", file=text_file)
+
+    DeBruijnGraph_dict = DeBruijnGraph(dat)
+
+    with open("DeBruijnkGraph_output.txt", "w") as text_file:
+        for key, val in DeBruijnGraph_dict.items():
             if (val != []):
                 val_str = val[0]
                 if len(val) > 1:
